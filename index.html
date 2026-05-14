@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in</title>
+    <link rel="preconnect" href="https://accounts.google.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <main class="signin">
+      <div class="signin-card">
+        <h1>Welcome</h1>
+        <p>Sign in to continue.</p>
+
+        <div
+          id="g_id_onload"
+          data-client_id="633990564665-g3ng4rome4kpqkomr69ihij26r399i5f.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false"
+        ></div>
+        <div
+          class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="filled_black"
+          data-text="continue_with"
+          data-size="large"
+          data-logo_alignment="left"
+        ></div>
+      </div>
+    </main>
+
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal-card">
+        <img id="modal-avatar" alt="" />
+        <h3>Welcome, <span id="modal-name">friend</span></h3>
+        <p id="modal-email"></p>
+        <button class="btn btn-primary" id="modal-close">Continue</button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
