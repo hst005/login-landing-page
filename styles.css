@@ -59,9 +59,40 @@ body {
   color: var(--muted);
 }
 
+.signin-actions {
+  display: flex;
+  justify-content: center;
+}
+
 .g_id_signin {
   display: flex;
   justify-content: center;
+}
+
+.google-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  background: #131314;
+  color: #e3e3e3;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.google-btn:hover {
+  background: #1a1a1b;
+}
+
+.google-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* Button (used in modal) */

@@ -1,0 +1,9 @@
+{
+  "appId": "com.eightchalo.login",
+  "appName": "8chalo Login",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {}
+}

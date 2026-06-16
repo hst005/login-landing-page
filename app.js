@@ -1,4 +1,11 @@
-// Decode a JWT payload (display only — verify server-side in production)
+import { Capacitor } from "@capacitor/core";
+import { SocialLogin } from "@capgo/capacitor-social-login";
+
+const GOOGLE_CLIENT_ID =
+  "633990564665-g3ng4rome4kpqkomr69ihij26r399i5f.apps.googleusercontent.com";
+
+const isNative = Capacitor.isNativePlatform();
+
 function decodeJwt(token) {
   try {
     const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
@@ -14,11 +21,7 @@ function decodeJwt(token) {
   }
 }
 
-// Called by Google after a successful sign-in (referenced declaratively in index.html)
-window.handleCredentialResponse = function (response) {
-  const profile = decodeJwt(response.credential);
-  if (!profile) return;
-
+function showWelcome(profile) {
   const modal = document.getElementById("modal");
   document.getElementById("modal-name").textContent =
     profile.given_name || profile.name || "friend";
@@ -35,7 +38,54 @@ window.handleCredentialResponse = function (response) {
 
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
+}
+
+// Web: called by Google Identity Services (index.html data-callback)
+window.handleCredentialResponse = function (response) {
+  const profile = decodeJwt(response.credential);
+  if (profile) showWelcome(profile);
 };
+
+async function initNativeSignIn() {
+  document.getElementById("web-signin").hidden = true;
+  document.getElementById("native-signin").hidden = false;
+
+  await SocialLogin.initialize({
+    google: {
+      webClientId: GOOGLE_CLIENT_ID,
+      mode: "online",
+    },
+  });
+
+  document.getElementById("native-google-btn")?.addEventListener("click", async () => {
+    try {
+      const response = await SocialLogin.login({
+        provider: "google",
+        options: { scopes: ["email", "profile"] },
+      });
+
+      if (response.provider !== "google") return;
+
+      const result = response.result;
+      if (result.responseType !== "online") return;
+
+      const profile = result.profile;
+      showWelcome({
+        given_name: profile.givenName,
+        name: profile.name,
+        email: profile.email,
+        picture: profile.imageUrl,
+      });
+    } catch (err) {
+      console.error("Google sign-in failed:", err);
+      alert("Sign-in failed. Check Google Cloud Android OAuth setup (SHA-1 + package name).");
+    }
+  });
+}
+
+if (isNative) {
+  initNativeSignIn();
+}
 
 const modal = document.getElementById("modal");
 
